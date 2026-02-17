@@ -1,0 +1,166 @@
+🧱 What We Will Build in 2 Weeks
+1️⃣ SaaS Core (Security First)
+
+Tenant model
+
+User model
+
+JWT authentication
+
+Role-based access control
+
+Password hashing (bcrypt)
+
+Basic audit logging
+
+Security by default.
+
+2️⃣ Multi-Tenant DB Design (Critical)
+
+Tables:
+
+tenants
+
+users
+
+cloud_accounts
+
+resources
+
+cost_summary
+
+audit_logs
+
+Every table must have tenant_id.
+
+Hard rule:
+
+No query without tenant filter.
+
+We design this properly.
+
+3️⃣ AWS Cross-Account Onboarding (Secure Model)
+
+You will NOT store AWS keys.
+
+You will:
+
+Provide customer with IAM role template
+
+They deploy role in their AWS account
+
+They give you:
+
+Role ARN
+
+External ID
+
+Samaira will:
+
+Use STS AssumeRole
+
+Test connection
+
+Store encrypted role ARN
+
+Least privilege policy only.
+
+4️⃣ Inventory Engine (Minimal First)
+
+Airflow DAG:
+
+Assume role
+
+Fetch:
+
+EC2
+
+RDS
+
+Store metadata in DB
+
+No S3, no Lambda yet.
+
+Keep it tight.
+
+5️⃣ Cost Summary (Simple)
+
+Use:
+
+AWS Cost Explorer API
+
+Collect:
+
+Last 30 days cost
+
+Group by service
+
+Store summarized result
+
+Not full CUR ingestion yet.
+
+6️⃣ Very Basic UI
+
+React:
+
+Login page
+
+Add AWS account
+
+View:
+
+Total monthly cost
+
+EC2 count
+
+RDS count
+
+Nothing fancy.
+
+This is scaffolding.
+
+🧠 Security Design (You Said Important)
+
+So let’s do this properly.
+
+Security Principles:
+
+1️⃣ Tenant Isolation
+
+Every query filtered by tenant_id
+
+Middleware enforces it
+
+2️⃣ Encrypted Sensitive Data
+
+Role ARN encrypted
+
+External ID encrypted
+
+Use AES at app level
+
+3️⃣ JWT Strategy
+
+Short-lived access token
+
+Refresh token stored securely
+
+4️⃣ Airflow Isolation
+
+DAG runs per tenant
+
+No shared state leaks
+
+5️⃣ IAM Policy (Read-only for Phase 1)
+
+Policy includes:
+
+Describe*
+
+Get*
+
+List*
+
+Cost Explorer read
+
+No write permissions.
